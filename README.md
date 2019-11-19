@@ -8,7 +8,7 @@ Overview
 -------
 
 This project aims at building a on-device APP used to asist human drivers. This APP combines three basic functions: object detection(vehicle, 
-traffic light, traffic sign, pedestrain, lane deviation estimation and distance estimation.
+traffic light, traffic sign, pedestrain), lane deviation warning and distance estimation.
 
 #### Motivation:
 To be added...
