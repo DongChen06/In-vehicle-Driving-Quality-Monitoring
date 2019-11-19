@@ -17,7 +17,7 @@ Part1. Project Building Offline
 -------
 
 ### Object Detection Module
-We use the deep learning methods to do object detection. To be specific, we use the [YOLO-v3]( https://pjreddie.com/darknet/yolo/) to do object detection, here we are only curious traffic-related objects, such as vehicles, pedestrain, traffic lights and stop signs.
+We use the deep learning methods to do object detection. To be specific, we use the [YOLO-v3]( https://pjreddie.com/darknet/yolo/) model to do object detection, here we are only curious about traffic-related objects, such as vehicles, pedestrain, traffic lights and stop signs.
 
 ### Lane Deviation Module
 
