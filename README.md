@@ -2,22 +2,22 @@ Traffic_Project
 ===============
 
 - Built by Dong Chen, Pengyu Chu, Zhaojian Li from Michigan State University
-- Started on Oct.19, 2019, Lastly updated on Oct.22, 2019
+- Started on Oct.19, 2019, Lastly updated on Nov.19, 2019
 
 Overview
 -------
 
-This project aims at building a on-device APP used to asist human drivers. This APP combines three functions: object detection(vehicle, 
-traffic light, traffic sign, pedestrain (in future)), lane deviation estimation and distance estimation.
+This project aims at building a on-device APP used to asist human drivers. This APP combines three basic functions: object detection(vehicle, 
+traffic light, traffic sign, pedestrain, lane deviation estimation and distance estimation.
 
 #### Motivation:
 To be added...
 
-Part1. Project Building On Ubuntu
+Part1. Project Building Offline
 -------
 
 ### Object Detection Module
-To be added...
+We use the deep learning methods to do object detection. To be specific, we use the [YOLO-v3]( https://pjreddie.com/darknet/yolo/) to do object detection, here we are only curious traffic-related objects, such as vehicles, pedestrain, traffic lights and stop signs.
 
 ### Lane Deviation Module
 
