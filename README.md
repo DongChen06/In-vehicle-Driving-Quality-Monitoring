@@ -18,6 +18,7 @@ Part1. Project Building Offline
 
 ### Object Detection Module
 We use the deep learning methods to do object detection. To be specific, we use the [YOLO-v3]( https://pjreddie.com/darknet/yolo/) model to do object detection, here we are only curious about traffic-related objects, such as vehicles, pedestrain, traffic lights and stop signs.
+This module is built on the resposity: [Resposity Link](https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch).
 
 ### Lane Deviation Module
 Considered limited computing resources on mobile devices (smart phones), we adapt the convential computer vision methods. 
@@ -25,8 +26,8 @@ Considered limited computing resources on mobile devices (smart phones), we adap
 This module is built on the resposity: [Resposity Link](https://github.com/ndrplz/self-driving-car/tree/master/project_4_advanced_lane_finding).
 
 Modification logs:
-- [x] Delete the display code for "intermediate pipeline images", here we only display the lane deviation and lane curvature.
-- [x] Clasify codes.
+- [x] Delete the display code for "intermediate pipeline images".
+- [x] Simiplify codes.
 - [ ] Problems with road curvature and offset values are always positive.
 
 ### Distance Estimation Module
