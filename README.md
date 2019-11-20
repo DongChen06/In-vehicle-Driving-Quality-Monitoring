@@ -62,6 +62,15 @@ For privacy issues, there are few open resources for dash camera videos. We will
 
      [video link](https://www.youtube.com/watch?v=kqG6j8lDm84)
 
+### Reference
+1. [YOLOv3: An Incremental Improvement](https://pjreddie.com/media/files/papers/YOLOv3.pdf)
+2. [What’s new in YOLO v3?
+](https://towardsdatascience.com/yolo-v3-object-detection-53fb7d3bfe6b)
+3. [Integration of Vehicle Detection and Distance Estimation using Stereo
+Vision for Real-Time AEB System](https://www.scitepress.org/Papers/2017/62967/62967.pdf)
+4. [Robust Range Estimation with a Monocular Camera for Vision-Based Forward Collision Warning System](https://www.hindawi.com/journals/tswj/2014/923632/)
+
+
 
 Part2. Project Built On Android
 -------
