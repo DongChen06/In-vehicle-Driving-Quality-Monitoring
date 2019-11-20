@@ -1,14 +1,14 @@
-Traffic_Project
+SafeDriving
 ===============
 
 - Built by Dong Chen, Pengyu Chu, Zhaojian Li from Michigan State University
-- Started on Oct.19, 2019, Lastly updated on Nov.19, 2019
+- Started on Oct.19, 2019, Lastly updated on Nov.20, 2019
 
 Overview
 -------
 
 This project aims at building a on-device APP used to asist human drivers. This APP combines three basic functions: object detection(vehicle, 
-traffic light, traffic sign, pedestrain), lane deviation warning and distance estimation.
+traffic light, stop sign, pedestrain), lane deviation warning and distance estimation.
 
 #### Motivation:
 To be added...
@@ -18,6 +18,11 @@ Part1. Project Built Offline
 
 ### Object Detection Module
 We use the deep learning methods to do object detection. To be specific, we use the [YOLO-v3]( https://pjreddie.com/darknet/yolo/) model to do object detection, here we are only curious about traffic-related objects, such as vehicles, pedestrain, traffic lights and stop signs.
+<p align="center">
+     <img src="lane_deviation/Docs/yolo.png" alt="output_example" width="60%" height="60%">
+     <br>Architecture of Yolo-v3 model
+</p>
+
 This module is built on the resposity: [Resposity Link](https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch).
 
 ### Lane Deviation Module
