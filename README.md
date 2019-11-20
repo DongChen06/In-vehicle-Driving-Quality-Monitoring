@@ -13,7 +13,7 @@ traffic light, traffic sign, pedestrain), lane deviation warning and distance es
 #### Motivation:
 To be added...
 
-Part1. Project Building Offline
+Part1. Project Built Offline
 -------
 
 ### Object Detection Module
@@ -44,20 +44,21 @@ When camera pitch angle is negligibly small, range d to vehicle can be calculate
 ```
 
 ### Demos:
+For privacy issues, there are few open resources for dash camera videos. We will show our application by three different video demos.
 - Stop sign detection
 
-     [video link](https://githu)
+     [video link](https://www.youtube.com/watch?v=jctnZcWk2uQ)
 
 - Traffic light detection
 
-     [video link](https://githu)
+     [video link](https://www.youtube.com/watch?v=7ZbgyEO9cro)
 
 - Lane deviation detection
 
-     [video link](https://githu)
+     [video link](https://www.youtube.com/watch?v=kqG6j8lDm84)
 
 
-Part2. Project Building On Android
+Part2. Project Built On Android
 -------
 
 To be added...
