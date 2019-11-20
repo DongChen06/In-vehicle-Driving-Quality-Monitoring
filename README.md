@@ -76,3 +76,7 @@ Part2. Project Built On Android
 -------
 
 To be added...
+### Reference
+1. [Yolo on iOS](https://github.com/ultralytics/yolov3)
+2. [Mobileye Camera Development Kit](https://autonomoustuff.com/product/mobileye-camera-dev-kit/)
+
