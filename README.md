@@ -68,6 +68,8 @@ For privacy issues, there are few open resources for dash camera videos. We will
 3. [Integration of Vehicle Detection and Distance Estimation using Stereo
 Vision for Real-Time AEB System](https://www.scitepress.org/Papers/2017/62967/62967.pdf)
 4. [Robust Range Estimation with a Monocular Camera for Vision-Based Forward Collision Warning System](https://www.hindawi.com/journals/tswj/2014/923632/)
+5. [Advanced Lane Finding](https://github.com/ndrplz/self-driving-car/tree/master/project_4_advanced_lane_finding)
+6. [Lane Departure Warning System for Autonomous Driving](https://github.com/JunshengFu/driving-lane-departure-warning)
 
 
 
