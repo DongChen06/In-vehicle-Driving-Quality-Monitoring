@@ -1,3 +1,7 @@
+"""
+This module is built on the resposity: [Resposity Link](https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch).
+"""
+
 from __future__ import division
 import torch
 from torch.autograd import Variable
