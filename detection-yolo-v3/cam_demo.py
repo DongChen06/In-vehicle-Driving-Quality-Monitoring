@@ -18,6 +18,7 @@ import random
 import argparse
 import pickle as pkl
 import json
+from datetime import datetime
 
 
 Focus_length = 28
@@ -78,6 +79,20 @@ def write(x, img):
         else:
             cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 225, 225], 1)
     return img
+
+
+def exist_item(x):
+    c1 = tuple(x[1:3].cpu().numpy().tolist())
+    c2 = tuple(x[3:5].cpu().numpy().tolist())
+    cls = int(x[-1])
+    label = "{0}".format(classes[cls])
+
+    if int(c2[1]) - int(c1[1]) == 0:
+        distance = 1000
+    else:
+        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1]))))
+
+    return label, distance
 
 
 def arg_parse():
@@ -174,10 +189,10 @@ if __name__ == '__main__':
             print("FPS of the video is {:5.2f}".format(frames / (time.time() - start)))
 
             if frames % 90 == 0:
-                detection_results.append([frames, "{:5.2f}".format(frames / (time.time() - start)),
-                                          list(map(lambda x: "{0}".format(classes[int(x[-1])]), output))])
+                detection_results.append([datetime.now(), "{:5.2f}".format(frames / (time.time() - start)),
+                                          list(map(lambda x: exist_item(x), output))])
                 with open('detection_results/' + 'detection_results' + str(frames) + '.json', 'w') as outfile:
-                    json.dump(detection_results, outfile)
+                    json.dump(detection_results, outfile, indent=4, sort_keys=True, default=str)
 
                 cmd = "gdrive upload --parent 1LuL43ZBOk3GnRMkn_CxKR1dxBROgDBEt {}".format(
                     'detection_results/' + 'detection_results' + str(frames) + '.json')
