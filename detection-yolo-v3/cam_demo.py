@@ -139,6 +139,9 @@ if __name__ == '__main__':
     cap = cv2.VideoCapture(0)
 
     assert cap.isOpened(), 'Cannot capture source'
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
 
     detection_results = []
     frames = 0
@@ -183,6 +186,8 @@ if __name__ == '__main__':
             list(map(lambda x: write(x, orig_im), output))
 
             cv2.imshow("frame", orig_im)
+            out.write(orig_im)
+
             key = cv2.waitKey(1)
             if key & 0xFF == ord('q'):
                 break
