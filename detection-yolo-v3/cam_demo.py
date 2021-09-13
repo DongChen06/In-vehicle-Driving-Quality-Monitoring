@@ -17,6 +17,8 @@ from darknet import Darknet
 import random
 import argparse
 import pickle as pkl
+import json
+
 
 Focus_length = 28
 
@@ -126,6 +128,7 @@ if __name__ == '__main__':
 
     assert cap.isOpened(), 'Cannot capture source'
 
+    detection_results = []
     frames = 0
     start = time.time()
     while cap.isOpened():
@@ -170,6 +173,15 @@ if __name__ == '__main__':
             frames += 1
             print("FPS of the video is {:5.2f}".format(frames / (time.time() - start)))
 
+            if frames % 90 == 0:
+                detection_results.append([frames, "{:5.2f}".format(frames / (time.time() - start)),
+                                          list(map(lambda x: "{0}".format(classes[int(x[-1])]), output))])
+                with open('detection_results/' + 'detection_results' + str(frames) + '.json', 'w') as outfile:
+                    json.dump(detection_results, outfile)
+
+                cmd = "gdrive upload --parent 1LuL43ZBOk3GnRMkn_CxKR1dxBROgDBEt {}".format(
+                    'detection_results/' + 'detection_results' + str(frames) + '.json')
+                os.system(cmd)
 
         else:
             break
