@@ -44,7 +44,7 @@ def prepare_out_blend_frame(blend_on_road, line_lt, line_rt, offset_meter):
                 (255, 255, 255), 2, cv2.LINE_AA)
     if offset_meter >= 0.4:
         cv2.putText(blend_on_road, 'Offset from center: {:.02f}m !!'.format(offset_meter), (880, 130), font, 0.9,
-                (255, 0, 0), 4, cv2.LINE_AA)
+                    (255, 0, 0), 4, cv2.LINE_AA)
     else:
         cv2.putText(blend_on_road, 'Offset from center: {:.02f}m'.format(offset_meter), (880, 130), font, 0.7,
                     (255, 255, 255), 2, cv2.LINE_AA)
@@ -115,15 +115,14 @@ if __name__ == '__main__':
     # main function
     # first things first: calibrate the camera
     ret, mtx, dist, rvecs, tvecs = calibrate_camera(calib_images_dir='camera_cal')
-
-    mode = 'video'
+    mode = 'cam'
 
     if mode == 'video':
         selector = 'project'
         clip = VideoFileClip('{}_video.mp4'.format(selector)).fl_image(process_pipeline)
         clip.write_videofile('out_{}_{}.mp4'.format(selector, time_window), audio=False)
 
-    else:
+    elif mode == 'image':
         test_img_dir = 'test_images'
         for test_img in os.listdir(test_img_dir):
             frame = cv2.imread(os.path.join(test_img_dir, test_img))
@@ -134,3 +133,36 @@ if __name__ == '__main__':
 
             plt.imshow(cv2.cvtColor(blend, code=cv2.COLOR_BGR2RGB))
             plt.show()
+    else:
+        cap = cv2.VideoCapture(0)
+
+        assert cap.isOpened(), 'Cannot capture source'
+        frame_width = int(cap.get(3))
+        frame_height = int(cap.get(4))
+        out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
+        frames = 0
+
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if ret:
+                blend = process_pipeline(frame, keep_state=False)
+                # Write the frame into the file 'output.avi'
+                out.write(blend)
+
+                # Press Q on keyboard to exit
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    break
+
+                frames += 1
+                if frames % 90 == 0:
+                    print("Current frames:{}".format(frames))
+            else:
+                break
+
+        cap.release()
+        # Closes all the frames
+        cv2.destroyAllWindows()
+
+
+
+

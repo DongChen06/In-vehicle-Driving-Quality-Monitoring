@@ -136,9 +136,6 @@ if __name__ == '__main__':
         model.cuda()
 
     model.eval()
-
-    videofile = 'video.avi'
-
     cap = cv2.VideoCapture(0)
 
     assert cap.isOpened(), 'Cannot capture source'
@@ -153,6 +150,10 @@ if __name__ == '__main__':
 
             img, orig_im, dim = prep_image(frame, inp_dim)
             im_dim = torch.FloatTensor(dim).repeat(1, 2)
+
+            # Press Q on keyboard to exit
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
 
             if CUDA:
                 im_dim = im_dim.cuda()
