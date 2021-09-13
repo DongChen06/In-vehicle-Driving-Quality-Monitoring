@@ -1,17 +1,24 @@
-from __future__ import division
+from __future__ import print_function, division
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import time
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import numpy as np
-import cv2
+# import torch
+# import torch.nn as nn
+# from torch.autograd import Variable
+# import numpy as np
+# import cv2
 from util import *
 from darknet import Darknet
-from preprocess import prep_image, inp_to_image
-import pandas as pd
+# from preprocess import prep_image, inp_to_image
+# import pandas as pd
 import random
 import argparse
 import pickle as pkl
+
+Focus_length = 28
 
 
 def get_test_input(input_dim, CUDA):
@@ -44,16 +51,30 @@ def prep_image(img, inp_dim):
 
 
 def write(x, img):
-    c1 = tuple(x[1:3].int())
-    c2 = tuple(x[3:5].int())
+    c1 = tuple(x[1:3].cpu().numpy().tolist())
+    c2 = tuple(x[3:5].cpu().numpy().tolist())
     cls = int(x[-1])
     label = "{0}".format(classes[cls])
     color = random.choice(colors)
-    cv2.rectangle(img, c1, c2, color, 1)
+    cv2.rectangle(img, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), color, 1)
     t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
     c2 = c1[0] + t_size[0] + 3, c1[1] + t_size[1] + 4
-    cv2.rectangle(img, c1, c2, color, -1)
-    cv2.putText(img, label, (c1[0], c1[1] + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1);
+    cv2.rectangle(img, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), color, -1)
+    cv2.putText(img, label, (int(c1[0]), int(c1[1]) + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+
+    if int(c2[1]) - int(c1[1]) == 0:
+        pass
+    else:
+        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1]))))
+        t_size_1 = cv2.getTextSize(distance, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
+        # right-top corner
+        c_r = tuple([int(c2[0]), int(c1[1])])
+        c4 = c_r[0] + t_size_1[0] + 4, c_r[1] + t_size_1[1] + 5
+        cv2.rectangle(img, c_r, (int(c4[0]), int(c4[1])), color, -1)
+        if 29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1])) <= 20:
+            cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [225, 0, 0], 1)
+        else:
+            cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 225, 225], 1)
     return img
 
 
@@ -81,7 +102,7 @@ if __name__ == '__main__':
     nms_thesh = float(args.nms_thresh)
     start = 0
     CUDA = torch.cuda.is_available()
-    
+
     num_classes = 80
     bbox_attrs = 5 + num_classes
 
@@ -113,8 +134,7 @@ if __name__ == '__main__':
         if ret:
 
             img, orig_im, dim = prep_image(frame, inp_dim)
-
-            #            im_dim = torch.FloatTensor(dim).repeat(1,2)                        
+            im_dim = torch.FloatTensor(dim).repeat(1, 2)
 
             if CUDA:
                 im_dim = im_dim.cuda()

@@ -116,10 +116,10 @@ if __name__ == '__main__':
     # first things first: calibrate the camera
     ret, mtx, dist, rvecs, tvecs = calibrate_camera(calib_images_dir='camera_cal')
 
-    mode = 'images'
+    mode = 'video'
 
     if mode == 'video':
-        selector = 'project3'
+        selector = 'project'
         clip = VideoFileClip('{}_video.mp4'.format(selector)).fl_image(process_pipeline)
         clip.write_videofile('out_{}_{}.mp4'.format(selector, time_window), audio=False)
 

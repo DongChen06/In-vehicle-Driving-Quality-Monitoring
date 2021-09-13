@@ -45,9 +45,7 @@ def write(x, img):
 def arg_parse():
     """
     Parse arguements to the detect module
-    
     """
-
     parser = argparse.ArgumentParser(description='YOLO v3 Video Detection Module')
 
     parser.add_argument("--video", dest='video', help=
@@ -140,9 +138,6 @@ if __name__ == '__main__':
 
             cv2.imshow("frame", orig_im)
             # cv2.imwrite("det/" + 'video' + str(frames) + '.jpg', orig_im)
-
-
-
             # key = cv2.waitKey(1)
             # if key & 0xFF == ord('q'):
             #     break

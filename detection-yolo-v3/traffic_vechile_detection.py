@@ -2,7 +2,12 @@
 This module is built on the resposity: [Resposity Link](https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch).
 """
 
-from __future__ import division
+from __future__ import print_function, division
+import os
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import torch
 from torch.autograd import Variable
 import cv2, os
@@ -34,29 +39,39 @@ def prep_image(img, inp_dim):
 
 def write(x, img):
     # img_dim = img.size(1)
-    c1 = tuple(x[1:3].int())
-    c2 = tuple(x[3:5].int())
+    # c1 = tuple(x[1:3].int())
+    # c2 = tuple(x[3:5].int())
+    c1 = tuple(x[1:3].cpu().numpy().tolist())
+    c2 = tuple(x[3:5].cpu().numpy().tolist())
+    # print(int(c2[1]) - int(c1[1]))
     cls = int(x[-1])
     label = "{0}".format(classes[cls])
-    distance = "{}".format(float(29 * Focus_length * 1.5 / (c2[1] - c1[1])))
-    color = random.choice(colors)
-    cv2.rectangle(img, c1, c2, color, 1)
 
+    color = random.choice(colors)
+    # cv2.rectangle(img, c1, c2, color, 1)
+    cv2.rectangle(img, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), color, 1)
     # put label on the image
     t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
     c3 = c1[0] + t_size[0] + 3, c1[1] + t_size[1] + 4
-    cv2.rectangle(img, c1, c3, color, -1)
-    cv2.putText(img, label, (c1[0], c1[1] + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+    # cv2.rectangle(img, c1, c3, color, -1)
+    cv2.rectangle(img, (int(c1[0]), int(c1[1])), (int(c3[0]), int(c3[1])), color, 1)
 
-    # t_size_1 = cv2.getTextSize(distance, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
-    # # right-top corner
-    # c_r = tuple([c2[0], c1[1]])
-    # c4 = c_r[0] + t_size_1[0] + 4, c_r[1] + t_size_1[1] + 5
-    # cv2.rectangle(img, c_r, c4, color, -1)
-    # if 29 * Focus_length * 1.5 / (c2[1] - c1[1]) <= 20:
-    #     cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [225, 0, 0], 1)
-    # else:
-    #     cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 225, 225], 1)
+    # cv2.putText(img, label, (c1[0], c1[1] + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+    cv2.putText(img, label, (int(c1[0]), int(c1[1]) + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+
+    if int(c2[1]) - int(c1[1]) == 0:
+        pass
+    else:
+        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1]))))
+        t_size_1 = cv2.getTextSize(distance, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
+        # right-top corner
+        c_r = tuple([int(c2[0]), int(c1[1])])
+        c4 = c_r[0] + t_size_1[0] + 4, c_r[1] + t_size_1[1] + 5
+        cv2.rectangle(img, c_r, (int(c4[0]), int(c4[1])), color, -1)
+        if 29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1])) <= 20:
+            cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [225, 0, 0], 1)
+        else:
+            cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 225, 225], 1)
     return img
 
 
@@ -66,8 +81,7 @@ def arg_parse():
     """
     parser = argparse.ArgumentParser(description='YOLO v3 Video Detection Module')
     parser.add_argument("--video", dest='video', help=
-    "Video to run detection upon",
-                        default="video.mp4", type=str)
+    "Video to run detection upon",default="out_project.mp4", type=str)
     parser.add_argument("--dataset", dest="dataset", help="Dataset on which the network has been trained",
                         default="pascal")
     parser.add_argument("--confidence", dest="confidence", help="Object Confidence to filter predictions", default=0.5)
@@ -121,7 +135,7 @@ if __name__ == '__main__':
     confidence = float(args.confidence)
     nms_thesh = float(args.nms_thresh)
     num_classes = 80
-    CUDA = torch.cuda.is_available()
+    CUDA = False  # torch.cuda.is_available()
 
     print("Loading network.....")
     model = Darknet(args.cfgfile)
@@ -141,10 +155,10 @@ if __name__ == '__main__':
     classes = load_classes('data/coco.names')
     colors = pkl.load(open("pallete", "rb"))
 
-    mode = 'images'
+    mode = 'video'
     if mode == 'video':
-        selector = 'project'
-        clip = VideoFileClip('{}_video.mp4'.format(selector)).fl_image(process_pipeline)
+        selector = 'out_project'
+        clip = VideoFileClip('out_project.mp4').fl_image(process_pipeline)
         clip.write_videofile('out_{}_{}.mp4'.format(selector, 1), audio=False)
     else:
         test_img_dir = 'stop_sign'
