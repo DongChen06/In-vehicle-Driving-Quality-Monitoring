@@ -98,7 +98,7 @@ def arg_parse():
 if __name__ == '__main__':
     cfgfile = "cfg/yolov3.cfg"
     weightsfile = "yolov3.weights"
-
+    # os.system("gdrive mkdir detection_results")
     args = arg_parse()
     confidence = float(args.confidence)
     nms_thesh = float(args.nms_thresh)
