@@ -59,6 +59,7 @@ def write(x, img):
     cls = int(x[-1])
     label = "{0}".format(classes[cls])
     color = random.choice(colors)
+    distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (c2[1] - c1[1])))
     cv2.rectangle(img, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), color, 1)
     t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
     c2 = c1[0] + t_size[0] + 3, c1[1] + t_size[1] + 4
@@ -68,13 +69,12 @@ def write(x, img):
     if int(c2[1]) - int(c1[1]) == 0:
         pass
     else:
-        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1]))))
         t_size_1 = cv2.getTextSize(distance, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
         # right-top corner
         c_r = tuple([int(c2[0]), int(c1[1])])
         c4 = c_r[0] + t_size_1[0] + 4, c_r[1] + t_size_1[1] + 5
         cv2.rectangle(img, c_r, (int(c4[0]), int(c4[1])), color, -1)
-        if 29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1])) <= 20:
+        if 29 * Focus_length * 1.5 / (c2[1] - c1[1]) <= 20:
             cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [225, 0, 0], 1)
         else:
             cv2.putText(img, distance, (c_r[0], c_r[1] + t_size_1[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 225, 225], 1)
@@ -90,17 +90,15 @@ def exist_item(x):
     if int(c2[1]) - int(c1[1]) == 0:
         distance = 1000
     else:
-        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (int(c2[1]) - int(c1[1]))))
+        distance = "{:.2f}".format(float(29 * Focus_length * 1.5 / (c2[1] - c1[1])))
 
     return label, distance
 
 
 def arg_parse():
     """
-    Parse arguements to the detect module
-    
+    Parse arguments to the detect module
     """
-
     parser = argparse.ArgumentParser(description='YOLO v3 Cam Demo')
     parser.add_argument("--confidence", dest="confidence", help="Object Confidence to filter predictions", default=0.25)
     parser.add_argument("--nms_thresh", dest="nms_thresh", help="NMS Threshhold", default=0.4)
