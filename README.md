@@ -3,7 +3,7 @@ In-vehicle Driving Quality Monitoring
 ### Robotics and Intelligent Vehicle Automation Lab (RIVAL)
 
 - Built by Dong Chen, Zhaojian Li from Michigan State University
-- Started on Oct.19, 2019, Lastly updated on Dec.03, 2019
+- Started on Oct.19, 2019, Lastly updated on Sept.14, 2021
 
 Overview
 -------
